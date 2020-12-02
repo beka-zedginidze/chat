@@ -21,6 +21,12 @@ const botName = 'ChatCord Bot';
 
 // Run when client connects
 io.on('connection', socket => {
+
+    //Handle chat event
+    socket.on('chat', function(data){
+      io.sockets.emit('chat', data)
+  });
+  
   socket.on('joinRoom', ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
 
@@ -68,6 +74,11 @@ io.on('connection', socket => {
       });
     }
   });
+      //typing
+      socket.on('typing', function(data){
+        console.log(data)
+        socket.broadcast.emit('typing', data);
+    });
 });
 
 const PORT = process.env.PORT || 3002;
